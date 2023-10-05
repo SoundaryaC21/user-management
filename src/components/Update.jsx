@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateUser } from "./UserReducer";
+import { updateUser } from "../Redux/UserReducer";
 
 const Update = () => {
   const { id } = useParams();
-  console.log(typeof id);
   const users = useSelector((state) => state.users);
   const existingUser = users.filter((user) => user.id === parseInt(id));
-  console.log(users);
-  const { name, email } = existingUser[0];
-  const [uname, setName] = useState(name);
-  const [uemail, setEmail] = useState(email);
+  const { name, email, role } = existingUser[0];
+  const [userName, setUserName] = useState(name);
+  const [userEmail, setUserEmail] = useState(email);
+  const [userRole, setUserRole] = useState(role);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,9 +18,10 @@ const Update = () => {
     e.preventDefault();
     dispatch(
       updateUser({
-        id: id,
-        name: uname,
-        email: uemail,
+        id,
+        name: userName,
+        email: userEmail,
+        role: userRole,
       })
     );
     navigate("/");
@@ -32,26 +32,41 @@ const Update = () => {
       <div className="w-50 border bg-secondary text-white p-5">
         <h3>UPDATE USER</h3>
         <form onSubmit={handleUpdate}>
-          <div>
+          <div className="mb-3">
             <label htmlFor="name">Name:</label>
             <input
               className="form-control"
               type="text"
               name="name"
               placeholder="enter your name"
-              value={uname}
-              onChange={(e) => setName(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
-          <div>
+          <div className="mb-3">
+            <label htmlFor="role">Role:</label>
+            <select
+              onChange={(e) => setUserRole(e.target.value)}
+              className="form-control"
+            >
+              {
+                <option value="" disabled selected hidden>
+                  Please Choose...
+                </option>
+              }
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+            </select>
+          </div>
+          <div className="mb-3">
             <label htmlFor="email">Email:</label>
             <input
               className="form-control"
               type="email"
               name="email"
               placeholder="enter your email"
-              value={uemail}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
           </div>
           <br />

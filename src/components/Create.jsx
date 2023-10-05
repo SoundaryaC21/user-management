@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import "./index.css";
-import { addUser } from "./UserReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addUser } from "../Redux/UserReducer";
 
 const Create = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addUser({ id: users[users.length - 1].id + 1, name, email }));
+    dispatch(
+      addUser({ id: users[users.length - 1].id + 1, name, email, role })
+    );
     navigate("/");
   };
 
@@ -23,7 +24,7 @@ const Create = () => {
       <div className="w-50 border bg-secondary text-white p-5">
         <h3>ADD NEW USER</h3>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="mb-3">
             <label htmlFor="name">Name:</label>
             <input
               className="form-control"
@@ -33,7 +34,22 @@ const Create = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div>
+          <div className="mb-3">
+            <label htmlFor="role">Role:</label>
+            <select
+              onChange={(e) => setRole(e.target.value)}
+              className="form-control"
+            >
+              {
+                <option value="" disabled selected hidden>
+                  Please Choose...
+                </option>
+              }
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+            </select>
+          </div>
+          <div className="mb-3">
             <label htmlFor="email">Email:</label>
             <input
               className="form-control"

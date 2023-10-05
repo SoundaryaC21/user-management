@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { deleteUser } from "./UserReducer";
+import { Link } from "react-router-dom";
+import { deleteUser } from "../Redux/UserReducer";
 
 const Home = () => {
   const users = useSelector((state) => state.users);
@@ -21,6 +21,7 @@ const Home = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Role</th>
             <th>Email</th>
             <th>Action</th>
           </tr>
@@ -29,7 +30,11 @@ const Home = () => {
           {users.map((user, index) => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>{user.name}</td>
+              <td>
+                <Link to={`/view/${user.id}`}>{user.name}</Link>
+              </td>
+              <td>{user.role}</td>
+
               <td>{user.email}</td>
               <td>
                 <Link
